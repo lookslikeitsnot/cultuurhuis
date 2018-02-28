@@ -10,6 +10,10 @@
 <h1>Het Cultuurhuis:voorstellingen</h1>
 <img src="<c:url value="/images/voorstellingen.png"/>" title="voorstellingen">
 <h2>Genres</h2>
-
+<ul>
+<c:forEach items="${genres}" var="genre">
+	<li>${genre.naam}</li>
+</c:forEach>
+</ul>
 </body>
 </html>

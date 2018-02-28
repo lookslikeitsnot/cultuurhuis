@@ -4,5 +4,12 @@
 <!doctype html>
 <html lang='nl'>
 <head>
-<vdab:head title='Pizza Luigi'/>
+<vdab:head title='Cultuurhuis'/>
 </head>
+<body>
+<h1>Het Cultuurhuis:voorstellingen</h1>
+<img src="<c:url value="/images/voorstellingen.png"/>" title="voorstellingen">
+<h2>Genres</h2>
+
+</body>
+</html>

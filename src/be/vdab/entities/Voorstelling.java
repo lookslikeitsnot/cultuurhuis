@@ -11,6 +11,7 @@ public class Voorstelling {
 	private long genreId;
 	private BigDecimal prijs;
 	private int vrijePlaatsen;
+	private int gereserveerdePlaatsen;
 	public Voorstelling(long id, String titel, String uitvoerders, LocalDateTime datum, long genreId, BigDecimal prijs,
 			int vrijePlaatsen) {
 		this.id = id;
@@ -112,6 +113,12 @@ public class Voorstelling {
 		if (vrijePlaatsen != other.vrijePlaatsen)
 			return false;
 		return true;
+	}
+	public int getGereserveerdePlaatsen() {
+		return gereserveerdePlaatsen;
+	}
+	public void setGereserveerdePlaatsen(int gereserveerdePlaatsen) {
+		this.gereserveerdePlaatsen = gereserveerdePlaatsen;
 	}
 	
 }

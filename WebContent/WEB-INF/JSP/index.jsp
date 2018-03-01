@@ -8,9 +8,7 @@
 <vdab:head title='Cultuurhuis' />
 </head>
 <body>
-	<h1>Het Cultuurhuis:voorstellingen</h1>
-	<img src="<c:url value="/images/voorstellingen.png"/>"
-		title="voorstellingen">
+	<vdab:header title='voorstellingen'/>
 	<h2>Genres</h2>
 	<ul>
 		<c:forEach items="${genres}" var="genre">

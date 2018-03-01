@@ -8,9 +8,7 @@
 <vdab:head title='Reservatie' />
 </head>
 <body>
-	<h1>Het Cultuurhuis:reserveren</h1>
-	<img src="<c:url value="/images/reserveren.png"/>"
-		title="reserveren">
+	<vdab:header title='reserveren'/>
 	<c:url value='/index.htm' var='homeURL' />
 	<a href="${homeURL}">Voorstellingen</a>
 	<c:if test="${not empty voorstelling}">

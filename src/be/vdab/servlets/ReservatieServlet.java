@@ -23,7 +23,7 @@ import be.vdab.utils.StringUtils;
 public class ReservatieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/reservatie.jsp";
-	private static final String REDIRECT_URL = "/index.htm";
+	private static final String REDIRECT_URL = "/mandje.htm";
 	private static final String MANDJE = "mandje";
 	private final transient VoorstellingenRepository voorstellingenRepository = new VoorstellingenRepository();
 

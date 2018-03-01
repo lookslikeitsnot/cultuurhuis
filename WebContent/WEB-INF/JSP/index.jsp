@@ -20,7 +20,7 @@
 			<li><a href="${url}">${genre.naam}</a></li>
 		</c:forEach>
 		<c:if test="${empty fouten and not empty param.genreid}">
-			<h2>${genre.naam} voorstellingen</h2>
+			<h2>${genre.naam}voorstellingen</h2>
 			<table>
 				<tr>
 					<th>Datum</th>
@@ -32,26 +32,23 @@
 				</tr>
 				<c:forEach items="${voorstellingen}" var="voorstelling">
 					<tr>
-						<fmt:parseDate 
-						value="${voorstelling.datum}" 
-						pattern="yyyy-MM-dd'T'HH:mm" 
-                        var="datum" />
-                        <fmt:formatDate 
-                        value = "${datum}" 
-                        type = "both" 
-         				pattern = "dd/MM/yy HH:mm"
-         				var = "fmtDate"
-						/>
-						<td>
-						<c:out value="${fmtDate}"/>
-						</td>
+						<fmt:parseDate value="${voorstelling.datum}"
+							pattern="yyyy-MM-dd'T'HH:mm" var="datum" />
+						<fmt:formatDate value="${datum}" type="both"
+							pattern="dd/MM/yy HH:mm" var="fmtDate" />
+						<td><c:out value="${fmtDate}" /></td>
 						<td>${voorstelling.titel}</td>
 						<td>${voorstelling.uitvoerders}</td>
 						<td>&euro;${voorstelling.prijs}</td>
 						<td>${voorstelling.vrijePlaatsen}</td>
-						<td><c:if test="${voorstelling.vrijePlaatsen>0}">
-								<a href="#">Reserveren</a>
-							</c:if></td>
+						<td>
+							<c:if test="${voorstelling.vrijePlaatsen>0}">
+								<c:url value='/reservatie.htm' var='reservatieURL'>
+									<c:param name='id' value='${voorstelling.id}' />
+								</c:url>
+								<a href="${reservatieURL}">Reserveren</a>
+							</c:if>
+						</td>
 					</tr>
 				</c:forEach>
 			</table>

@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 
 import be.vdab.entities.Voorstelling;
 import be.vdab.repositories.VoorstellingenRepository;
+import be.vdab.utils.StringUtils;
 
 @WebServlet("/mandje.htm")
 public class MandjeServlet extends HttpServlet {
@@ -37,7 +38,7 @@ public class MandjeServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			@SuppressWarnings("unchecked")
-						Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
+			Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
 			List<Voorstelling> voorstellingen = new ArrayList<>();
 			if (mandje != null) {
 				for (Map.Entry<Long, Integer> voorstellingEnPlaatsen : mandje.entrySet()) {
@@ -55,24 +56,34 @@ public class MandjeServlet extends HttpServlet {
 		} else {
 			fouten.put("mandje", "Mandje bestaat niet");
 		}
-		if(!fouten.isEmpty()) {
+		if (!fouten.isEmpty()) {
 			request.setAttribute("fouten", fouten);
 		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		Map<String, String> fouten = new HashMap<>();
 		HttpSession session = request.getSession(false);
+		String[] voorstellingIdStrings = request.getParameterValues("voorstellingId");
 		if (session != null) {
-			
+			@SuppressWarnings("unchecked")
+			Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
+
+			for (String voorstellingIdString : voorstellingIdStrings) {
+				if (StringUtils.isLong(voorstellingIdString)) {
+					mandje.remove(Long.parseLong(voorstellingIdString));
+				}
+			}
+
+			session.setAttribute("mandje", mandje);
+			response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
 		}
 		if (!fouten.isEmpty()) {
 			response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
 		}
 	}
-	
-	
 
 }

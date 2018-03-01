@@ -1,4 +1,4 @@
-<%@page contentType='text/html' pageEncoding='UTF-8' session='false'%>
+<%@page contentType='text/html' pageEncoding='UTF-8'%>
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 <%@taglib uri='http://vdab.be/tags' prefix='vdab'%>
 <%@taglib prefix='fmt' uri='http://java.sun.com/jsp/jstl/fmt'%>
@@ -9,6 +9,8 @@
 </head>
 <body>
 	<h1>Het Cultuurhuis:reserveren</h1>
+	<img src="<c:url value="/images/reserveren.png"/>"
+		title="reserveren">
 	<c:url value='/index.htm' var='homeURL' />
 	<a href="${homeURL}">Voorstellingen</a>
 	<c:if test="${not empty voorstelling}">
@@ -32,7 +34,10 @@
 			<dt>Plaatsen</dt>
 			<dd>
 			<form method="post">
-			<input name="aantalPlaatsen" type="number" min="0" max="${voorstelling.vrijePlaatsen}">
+			<input name="id" type="hidden" value="${voorstelling.id}">
+			<input name="aantalplaatsen" value="${alinmandje}" 
+			type="number" min="1" max="${voorstelling.vrijePlaatsen}" 
+			autofocus required>
 			<input type="submit" value="Reserveren">
 			</form>
 			</dd>

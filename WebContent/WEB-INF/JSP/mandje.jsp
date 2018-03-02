@@ -9,7 +9,12 @@
 </head>
 <body>
 	<vdab:header title='mandje' />
-	<c:if test="${empty fouten}">
+	<c:if test="${empty mandje}">
+	<h2>Mandje is leeg</h2>
+	<c:if test="${not empty fouten}">${fouten.mandje}</c:if>
+	<a href="<c:url value='/'/>">Klik hier om alle voorstellingen te zien</a>
+	</c:if>
+	<c:if test="${not empty voorstellingen}">
 	<form method="post">
 		<table>
 		
@@ -33,7 +38,7 @@
 						<td>&euro;${voorstelling.prijs}</td>
 						<td>${voorstelling.gereserveerdePlaatsen}</td>
 						<td>
-							<input type="checkbox" name="voorstellingId" id="${voorstelling.id}">
+							<input type="checkbox" name="voorstellingId" value="${voorstelling.id}">
 						</td>
 					</tr>
 				</c:forEach>

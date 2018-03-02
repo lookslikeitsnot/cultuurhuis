@@ -49,12 +49,15 @@ public class MandjeServlet extends HttpServlet {
 						voorstellingen.add(voorstelling);
 					}
 				}
+				if (mandje.isEmpty()) {
+					fouten.put("mandje", "Het mandje bevat geen voorstellingen!");
+				}
 				request.setAttribute("voorstellingen", voorstellingen);
 			} else {
-				fouten.put("mandje", "Mandje is leeg");
+				fouten.put("mandje", "Het mandje is nog niet gemaakt");
 			}
 		} else {
-			fouten.put("mandje", "Mandje bestaat niet");
+			fouten.put("mandje", "Het mandje kan niet gemaakt worden. Check uw browser instellingen");
 		}
 		if (!fouten.isEmpty()) {
 			request.setAttribute("fouten", fouten);
@@ -65,25 +68,22 @@ public class MandjeServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Map<String, String> fouten = new HashMap<>();
 		HttpSession session = request.getSession(false);
 		String[] voorstellingIdStrings = request.getParameterValues("voorstellingId");
-		if (session != null) {
+		if (session != null && voorstellingIdStrings != null) {
 			@SuppressWarnings("unchecked")
 			Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
-
-			for (String voorstellingIdString : voorstellingIdStrings) {
-				if (StringUtils.isLong(voorstellingIdString)) {
-					mandje.remove(Long.parseLong(voorstellingIdString));
+			if (mandje != null) {
+				for (String voorstellingIdString : voorstellingIdStrings) {
+					if (StringUtils.isLong(voorstellingIdString)) {
+						mandje.remove(Long.parseLong(voorstellingIdString));
+					}
 				}
+				session.setAttribute("mandje", mandje);
+				
 			}
-
-			session.setAttribute("mandje", mandje);
-			response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
 		}
-		if (!fouten.isEmpty()) {
-			response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
-		}
+		response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
 	}
 
 }

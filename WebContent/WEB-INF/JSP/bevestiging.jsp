@@ -10,16 +10,17 @@
 <body>
 	<vdab:header title='bevestiging' />
 	<c:if test="${not empty sessionScope.mandje}">
+		<a href="<c:url value='/'/>">Voorstellingen</a>
 		<a href="<c:url value='/mandje.htm'/>">Reservatiemandje</a>
-		<a href="<c:url value='#'/>">Bevestiging reservatie</a>
+
 	</c:if>
 	<h2>Stap 1:wie ben je ?</h2>
 	<form method="post">
-		<label for="gebruikersnaam">Gebruikersnaam</label><br> <input type="text"
-			name="gebruikersnaam" id="gebruikersnaam" autofocus required><br>
-		<label for="paswoord">Paswoord</label><br> <input type="password"
-			name="paswoord" id="paswoord" required><br> <input type="submit"
-			value="Zoek me op" id="zoekKnop">
+		<label for="gebruikersnaam">Gebruikersnaam</label><br> <input
+			type="text" name="gebruikersnaam" id="gebruikersnaam" autofocus
+			required><br> <label for="paswoord">Paswoord</label><br>
+		<input type="password" name="paswoord" id="paswoord" required><br>
+		<input type="submit" value="Zoek me op" id="zoekKnop">
 	</form>
 	<form action="/cultuurHuis/nieuweklant.htm">
 		<input type="submit" value="Ik ben nieuw" id="nieuwKnop">

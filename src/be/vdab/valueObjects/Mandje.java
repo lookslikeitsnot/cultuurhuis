@@ -64,6 +64,9 @@ public class Mandje {
 	}
 	
 	public void add(Reservatie reservatie) {
+		if(mandje.contains(reservatie)) {
+			mandje.remove(reservatie);
+		}
 		mandje.add(reservatie);
 	}
 }

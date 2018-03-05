@@ -32,20 +32,6 @@ public class BevestigingServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		Map<String, String> fouten = new LinkedHashMap<>();
-		if (session != null) {
-			@SuppressWarnings("unchecked")
-			Optional<Klant> klant = (Optional<Klant>) session.getAttribute("optioneleKlant");
-			if(klant != null) {
-				if(klant.isPresent()) {
-					request.setAttribute("klant", klant.get());
-				} else {
-					fouten.put("bevestig", "Verkeerde gebruikersnaam of paswoord.");
-				}				
-			}			
-			request.setAttribute("fouten", fouten);
-		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 	
@@ -55,11 +41,21 @@ public class BevestigingServlet extends HttpServlet{
 		String gebruikersnaam = request.getParameter("gebruikersnaam");
 		String paswoord = request.getParameter("paswoord");
 		HttpSession session = request.getSession(false);
+		Map<String, String> fouten = new LinkedHashMap<>();
 		if(session != null) {
-			Optional<Klant> klant = klantenRepository.getKlantByNaamEnPaswoord(gebruikersnaam, paswoord);
-			session.setAttribute("optioneleKlant", klant);
+			Optional<Klant> optionalKlant = klantenRepository.getKlantByGebruikersnaamEnPaswoord(gebruikersnaam, paswoord);
+			if(optionalKlant.isPresent()) {
+				session.setAttribute("klant", optionalKlant.get());
+				response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
+			} else {
+				fouten.put("bevestig", "Verkeerde gebruikersnaam of paswoord.");
+				request.setAttribute("fouten", fouten);
+				request.getRequestDispatcher(VIEW).forward(request, response);
+				
+			}
+		} else {
+			request.getRequestDispatcher(VIEW).forward(request, response);
 		}
-		request.setAttribute("autre", "autre argument");
-		response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
+		
 	}
 }

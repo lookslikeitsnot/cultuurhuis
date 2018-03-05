@@ -29,4 +29,8 @@ public class StringUtils {
 			return false;
 		}
 	}
+	
+	public static boolean isStringValid(String string) {
+		return (string != null && !string.trim().isEmpty());
+	}
 }

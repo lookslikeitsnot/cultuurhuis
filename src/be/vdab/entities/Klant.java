@@ -9,7 +9,7 @@ public class Klant {
 	private Adres adres;
 	private String gebruikersnaam;
 	private String paswoord;
-	
+
 	public Klant(long id, String voornaam, String familienaam, Adres adres, String gebruikersnaam, String paswoord) {
 		this.id = id;
 		this.voornaam = voornaam;
@@ -17,6 +17,18 @@ public class Klant {
 		this.adres = adres;
 		this.gebruikersnaam = gebruikersnaam;
 		this.paswoord = paswoord;
+	}
+	
+	public Klant(String voornaam, String familienaam, Adres adres, String gebruikersnaam, String paswoord) {
+		this.voornaam = voornaam;
+		this.familienaam = familienaam;
+		this.adres = adres;
+		this.gebruikersnaam = gebruikersnaam;
+		this.paswoord = paswoord;
+	}
+
+	public Klant() {
+
 	}
 
 	public long getId() {
@@ -94,8 +106,36 @@ public class Klant {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
-		return voornaam + " " + familienaam + " " +  adres.toString();
+		return voornaam + " " + familienaam + " " + adres.toString();
 	}
+
+//	public void setVoornaam(String voornaam) {
+//		if (StringUtils.isStringValid(voornaam)) {
+//			throw new IllegalArgumentException();
+//		}
+//		this.voornaam = voornaam;
+//	}
+//
+//	public void setFamilienaam(String familienaam) {
+//		if (StringUtils.isStringValid(familienaam)) {
+//			throw new IllegalArgumentException();
+//		}
+//		this.familienaam = familienaam;
+//	}
+//
+//	public void setAdres(Adres adres) {
+//		this.adres = adres;
+//	}
+//
+//	public void setGebruikersnaam(String gebruikersnaam) {
+//		this.gebruikersnaam = gebruikersnaam;
+//	}
+//
+//	public void setPaswoord(String paswoord) {
+//		this.paswoord = paswoord;
+//	}
+
 }

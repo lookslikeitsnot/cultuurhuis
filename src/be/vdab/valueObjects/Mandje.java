@@ -2,31 +2,31 @@ package be.vdab.valueObjects;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import be.vdab.entities.Voorstelling;
 import be.vdab.repositories.VoorstellingenRepository;
 
 public class Mandje {
-	Map<Long, Integer> mandje;
+	Set<Reservatie> mandje;
 	
 	public Mandje() {
-		mandje = new LinkedHashMap<>();
+		mandje = new LinkedHashSet<>();
 	}
 	
-	public Map<Long, Integer> getMandje() {
+	public Set<Reservatie> getMandje() {
 		return mandje;
 	}
 	
 	public Map<Voorstelling, Integer> getVoorstellingenEnPlaatsen(VoorstellingenRepository voorstellingenRepository){
 		Map<Voorstelling, Integer> voorstellingen = new LinkedHashMap<>();
-		for (Map.Entry<Long, Integer> voorstellingEnPlaatsen : mandje.entrySet()) {
-			Voorstelling voorstelling = 
-					voorstellingenRepository
-					.findById(voorstellingEnPlaatsen.getKey())
-					.get();
-			if (voorstelling != null) {
-				voorstellingen.put(voorstelling, voorstellingEnPlaatsen.getValue());
+		for (Reservatie reservatie : mandje) {
+			Optional<Voorstelling> voorstelling = voorstellingenRepository.findById(reservatie.getVoorstellingsid());
+			if (voorstelling.isPresent()) {
+				voorstellingen.put(voorstelling.get(), reservatie.getPlaatsen());
 			}
 		}
 		return voorstellingen;
@@ -34,16 +34,11 @@ public class Mandje {
 	
 	public BigDecimal getMandjeWaarde(VoorstellingenRepository voorstellingenRepository) {
 		BigDecimal mandjeWaarde = BigDecimal.ZERO;
-		for (Map.Entry<Long, Integer> voorstellingEnPlaatsen : mandje.entrySet()) {
-			BigDecimal voorstellingPrijs = 
-					voorstellingenRepository
-					.findById(voorstellingEnPlaatsen.getKey())
-					.get()
-					.getPrijs();
-			mandjeWaarde = mandjeWaarde.add(
-					voorstellingPrijs.multiply(
-							BigDecimal.valueOf(
-									voorstellingEnPlaatsen.getValue())));
+		for (Reservatie reservatie : mandje) {
+			BigDecimal voorstellingPrijs = voorstellingenRepository.findById(reservatie.getVoorstellingsid())
+					.get().getPrijs();
+			mandjeWaarde = mandjeWaarde.add(voorstellingPrijs.multiply(
+							BigDecimal.valueOf(reservatie.getPlaatsen())));
 		}
 		return mandjeWaarde;
 	}
@@ -53,18 +48,22 @@ public class Mandje {
 	}
 	
 	public void remove(long voorstellingId) {
-		mandje.remove(voorstellingId);
+		mandje.removeIf(reservatie -> reservatie.getVoorstellingsid()==voorstellingId);
 	}
 	
 	public boolean containsVoorstelling(long voorstellingId) {
-		return mandje.containsKey(voorstellingId);
+		return mandje.stream().anyMatch(reservatie -> reservatie.getVoorstellingsid()==voorstellingId);
 	}
 	
 	public int get(long voorstellingId) {
-		return mandje.get(voorstellingId);
+		return mandje.stream()
+				.filter(reservatie -> reservatie.getVoorstellingsid()==voorstellingId)
+				.findAny()
+				.get()
+				.getPlaatsen();
 	}
 	
-	public void put(long voorstellingId, int aantalGereserveerdePlaatsen) {
-		mandje.put(voorstellingId, aantalGereserveerdePlaatsen);
+	public void add(Reservatie reservatie) {
+		mandje.add(reservatie);
 	}
 }

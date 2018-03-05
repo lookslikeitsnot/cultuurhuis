@@ -31,7 +31,7 @@
 	${fouten.bevestig}
 	</c:if>
 	<h2>Stap 2:Bevestigen</h2>
-	<form method="post">
+	<form method="post" action="/cultuurHuis/overzicht.htm">
 		<input type="submit" value="Bevestigen" name="bevestigen"
 			id="bevestigKnop">
 	</form>

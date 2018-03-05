@@ -4,11 +4,13 @@ public class Reservatie {
 	private long id;
 	private long klantid;
 	private long voorstellingsid;
-	private long plaatsen;
-	public Reservatie(long klantid, long voorstellingsid, long plaatsen) {
-		this.klantid = klantid;
+	private int plaatsen;
+	public Reservatie(long voorstellingsid, int plaatsen) {
 		this.voorstellingsid = voorstellingsid;
 		this.plaatsen = plaatsen;
+	}
+	public void setKlantid(long klantid) {
+		this.klantid = klantid;
 	}
 	public long getId() {
 		return id;
@@ -19,7 +21,7 @@ public class Reservatie {
 	public long getVoorstellingsid() {
 		return voorstellingsid;
 	}
-	public long getPlaatsen() {
+	public int getPlaatsen() {
 		return plaatsen;
 	}
 	@Override
@@ -28,7 +30,6 @@ public class Reservatie {
 		int result = 1;
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + (int) (klantid ^ (klantid >>> 32));
-		result = prime * result + (int) (plaatsen ^ (plaatsen >>> 32));
 		result = prime * result + (int) (voorstellingsid ^ (voorstellingsid >>> 32));
 		return result;
 	}
@@ -44,8 +45,6 @@ public class Reservatie {
 		if (id != other.id)
 			return false;
 		if (klantid != other.klantid)
-			return false;
-		if (plaatsen != other.plaatsen)
 			return false;
 		if (voorstellingsid != other.voorstellingsid)
 			return false;

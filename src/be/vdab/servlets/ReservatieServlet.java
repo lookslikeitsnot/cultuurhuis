@@ -18,6 +18,7 @@ import be.vdab.entities.Voorstelling;
 import be.vdab.repositories.VoorstellingenRepository;
 import be.vdab.utils.StringUtils;
 import be.vdab.valueObjects.Mandje;
+import be.vdab.valueObjects.Reservatie;
 
 @WebServlet("/reservatie.htm")
 public class ReservatieServlet extends HttpServlet {
@@ -92,7 +93,7 @@ public class ReservatieServlet extends HttpServlet {
 						if (mandje == null) {
 							mandje = new Mandje();
 						}
-						mandje.put(voorstellingId, aantalPlaatsen);
+						mandje.add(new Reservatie(voorstellingId, aantalPlaatsen));
 						session.setAttribute("mandje", mandje);
 						response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + REDIRECT_URL));
 					} else {

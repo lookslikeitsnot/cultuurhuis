@@ -2,20 +2,19 @@ package be.vdab.valueObjects;
 
 public class Reservatie {
 	private long id;
-	private long klantenid;
+	private long klantid;
 	private long voorstellingsid;
 	private long plaatsen;
-	public Reservatie(long id, long klantenid, long voorstellingsid, long plaatsen) {
-		this.id = id;
-		this.klantenid = klantenid;
+	public Reservatie(long klantid, long voorstellingsid, long plaatsen) {
+		this.klantid = klantid;
 		this.voorstellingsid = voorstellingsid;
 		this.plaatsen = plaatsen;
 	}
 	public long getId() {
 		return id;
 	}
-	public long getKlantenid() {
-		return klantenid;
+	public long getKlantid() {
+		return klantid;
 	}
 	public long getVoorstellingsid() {
 		return voorstellingsid;
@@ -28,7 +27,7 @@ public class Reservatie {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + (int) (klantenid ^ (klantenid >>> 32));
+		result = prime * result + (int) (klantid ^ (klantid >>> 32));
 		result = prime * result + (int) (plaatsen ^ (plaatsen >>> 32));
 		result = prime * result + (int) (voorstellingsid ^ (voorstellingsid >>> 32));
 		return result;
@@ -44,7 +43,7 @@ public class Reservatie {
 		Reservatie other = (Reservatie) obj;
 		if (id != other.id)
 			return false;
-		if (klantenid != other.klantenid)
+		if (klantid != other.klantid)
 			return false;
 		if (plaatsen != other.plaatsen)
 			return false;

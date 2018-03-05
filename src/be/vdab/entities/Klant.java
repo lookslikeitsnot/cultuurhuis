@@ -96,7 +96,6 @@ public class Klant {
 	}
 	@Override
 	public String toString() {
-		return id + ". " + familienaam + " " + voornaam + " (" + gebruikersnaam
-				+ ") " + adres.toString();
+		return voornaam + " " + familienaam + " " +  adres.toString();
 	}
 }

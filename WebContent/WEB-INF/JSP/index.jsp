@@ -11,7 +11,7 @@
 	<vdab:header title='voorstellingen'/>
 	<c:if test="${not empty sessionScope.mandje}">
 	<a href="<c:url value='/mandje.htm'/>">Reservatiemandje</a>
-	<a href="<c:url value='#'/>">Bevestiging reservatie</a>
+	<a href="<c:url value='/bevestig.htm'/>">Bevestiging reservatie</a>
 	</c:if>
 	<h2>Genres</h2>
 	<ul>

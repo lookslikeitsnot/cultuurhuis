@@ -15,7 +15,7 @@
 		
 	</c:if>
 	<a href="<c:url value='/'/>">Voorstellingen</a>
-	<a href="<c:url value='#'/>">Bevestiging reservatie</a>
+	<a href="<c:url value='/bevestig.htm'/>">Bevestiging reservatie</a>
 	<c:if test="${not empty voorstellingenEnPlaatsen}">
 		<form method="post">
 			<table>

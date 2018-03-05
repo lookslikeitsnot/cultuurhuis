@@ -11,7 +11,7 @@ public class ReservatiesRepository extends AbstractRepository {
 	private static final String INSERT_RESERVATIE = "INSERT INTO " + "reservaties(klantid, voorstellingsid, plaatsen) "
 			+ "VALUES(?,?,?)";
 
-	public void insertReservaties(Reservatie reservatie) {
+	public void insertReservatie(Reservatie reservatie) {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement(INSERT_RESERVATIE)) {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);

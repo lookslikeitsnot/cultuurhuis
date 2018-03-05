@@ -9,41 +9,43 @@
 </head>
 <body>
 	<vdab:header title='mandje' />
-	<c:if test="${empty mandje}">
-	<h2>Mandje is leeg</h2>
-	<c:if test="${not empty fouten}">${fouten.mandje}</c:if>
-	<a href="<c:url value='/'/>">Klik hier om alle voorstellingen te zien</a>
-	</c:if>
-	<c:if test="${not empty voorstellingen}">
-	<form method="post">
-		<table>
+	<c:if test="${empty voorstellingenEnPlaatsen}">
+		<h2>Mandje is leeg</h2>
+		<c:if test="${not empty fouten}">${fouten.mandje}</c:if>
 		
-			<tr>
-				<th>Datum</th>
-				<th>Titel</th>
-				<th>Uitvoerders</th>
-				<th>Prijs</th>
-				<th>Plaatsen</th>
-				<th><input type="submit" value="Verwijderen"></th>
-			</tr>
-			<c:forEach items="${voorstellingen}" var="voorstelling">
+	</c:if>
+	<a href="<c:url value='/'/>">Voorstellingen</a>
+	<a href="<c:url value='#'/>">Bevestiging reservatie</a>
+	<c:if test="${not empty voorstellingenEnPlaatsen}">
+		<form method="post">
+			<table>
+
+				<tr>
+					<th>Datum</th>
+					<th>Titel</th>
+					<th>Uitvoerders</th>
+					<th>Prijs</th>
+					<th>Plaatsen</th>
+					<th><input type="submit" value="Verwijderen"></th>
+				</tr>
+				<c:forEach items="${voorstellingenEnPlaatsen}" var="voorstelling">
 					<tr>
-						<fmt:parseDate value="${voorstelling.datum}"
+						<fmt:parseDate value="${voorstelling.key.datum}"
 							pattern="yyyy-MM-dd'T'HH:mm" var="datum" />
 						<fmt:formatDate value="${datum}" type="both"
 							pattern="dd/MM/yy HH:mm" var="fmtDate" />
 						<td><c:out value="${fmtDate}" /></td>
-						<td>${voorstelling.titel}</td>
-						<td>${voorstelling.uitvoerders}</td>
-						<td>&euro;${voorstelling.prijs}</td>
-						<td>${voorstelling.gereserveerdePlaatsen}</td>
-						<td>
-							<input type="checkbox" name="voorstellingId" value="${voorstelling.id}">
-						</td>
+						<td>${voorstelling.key.titel}</td>
+						<td>${voorstelling.key.uitvoerders}</td>
+						<td>&euro;${voorstelling.key.prijs}</td>
+						<td>${voorstelling.value}</td>
+						<td><input type="checkbox" name="voorstellingIds"
+							value="${voorstelling.key.id}"></td>
 					</tr>
 				</c:forEach>
-		</table>
+			</table>
 		</form>
+		<p>Te betalen: &euro;${mandjeWaarde}</p>
 	</c:if>
 </body>
 </html>

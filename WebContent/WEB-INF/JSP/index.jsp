@@ -1,4 +1,4 @@
-<%@page contentType='text/html' pageEncoding='UTF-8' session='false'%>
+<%@page contentType='text/html' pageEncoding='UTF-8'%>
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 <%@taglib uri='http://vdab.be/tags' prefix='vdab'%>
 <%@taglib prefix='fmt' uri='http://java.sun.com/jsp/jstl/fmt'%>
@@ -9,6 +9,10 @@
 </head>
 <body>
 	<vdab:header title='voorstellingen'/>
+	<c:if test="${not empty sessionScope.mandje}">
+	<a href="<c:url value='/mandje.htm'/>">Reservatiemandje</a>
+	<a href="<c:url value='#'/>">Bevestiging reservatie</a>
+	</c:if>
 	<h2>Genres</h2>
 	<ul>
 		<c:forEach items="${genres}" var="genre">

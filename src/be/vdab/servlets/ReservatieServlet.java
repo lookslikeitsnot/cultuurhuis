@@ -2,7 +2,6 @@ package be.vdab.servlets;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,12 +17,14 @@ import javax.sql.DataSource;
 import be.vdab.entities.Voorstelling;
 import be.vdab.repositories.VoorstellingenRepository;
 import be.vdab.utils.StringUtils;
+import be.vdab.valueObjects.Mandje;
 
 @WebServlet("/reservatie.htm")
 public class ReservatieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/reservatie.jsp";
 	private static final String REDIRECT_URL = "/mandje.htm";
+	private static final String REDIRECT_HOME_URL = "/index.htm";
 	private static final String MANDJE = "mandje";
 	private final transient VoorstellingenRepository voorstellingenRepository = new VoorstellingenRepository();
 
@@ -32,7 +33,6 @@ public class ReservatieServlet extends HttpServlet {
 		voorstellingenRepository.setDataSource(dataSource);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -42,16 +42,16 @@ public class ReservatieServlet extends HttpServlet {
 			if (!StringUtils.isLong(voorstellingidStr)) {
 				fouten.put("voorstelling", "Voorstelling niet gevonden");
 			} else {
-				long voorstellingid = Long.parseLong(voorstellingidStr);
-				Optional<Voorstelling> voorstelling = voorstellingenRepository.findById(voorstellingid);
+				long voorstellingId = Long.parseLong(voorstellingidStr);
+				Optional<Voorstelling> voorstelling = voorstellingenRepository.findById(voorstellingId);
 				if (voorstelling.isPresent()) {
 					request.setAttribute("voorstelling", voorstelling.get());
 					HttpSession session = request.getSession(false);
 					if (session != null) {
-						Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
+						Mandje mandje = (Mandje) session.getAttribute(MANDJE);
 						if (mandje != null) {
-							if (mandje.containsKey(voorstellingid)) {
-								request.setAttribute("alinmandje", mandje.get(voorstellingid));
+							if (mandje.containsVoorstelling(voorstellingId)) {
+								request.setAttribute("alinmandje", mandje.get(voorstellingId));
 							}
 						}
 					}
@@ -65,11 +65,10 @@ public class ReservatieServlet extends HttpServlet {
 
 			request.getRequestDispatcher(VIEW).forward(request, response);
 		} else {
-			response.sendRedirect(request.getContextPath() + REDIRECT_URL);
+			response.sendRedirect(request.getContextPath() + REDIRECT_HOME_URL);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -89,15 +88,15 @@ public class ReservatieServlet extends HttpServlet {
 					if (vrijePlaatsen >= aantalPlaatsen && aantalPlaatsen > 0) {
 						HttpSession session = request.getSession();
 
-						Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
+						Mandje mandje = (Mandje) session.getAttribute(MANDJE);
 						if (mandje == null) {
-							mandje = new LinkedHashMap<>();
+							mandje = new Mandje();
 						}
 						mandje.put(voorstellingId, aantalPlaatsen);
 						session.setAttribute("mandje", mandje);
 						response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + REDIRECT_URL));
 					} else {
-						fouten.put("aantalplaatsen", "Moet tussen 0 en " + vrijePlaatsen);
+						fouten.put("aantalplaatsen", "Moet tussen 1 en " + vrijePlaatsen);
 					}
 				} else {
 					fouten.put("id", "Ongeldig");

@@ -35,6 +35,7 @@ public class NieuweKlantServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setAttribute("fouten", new LinkedHashMap<>());
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 	

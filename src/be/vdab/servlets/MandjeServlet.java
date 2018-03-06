@@ -70,7 +70,6 @@ public class MandjeServlet extends HttpServlet {
 				} else {
 					session.removeAttribute(MANDJE);
 				}
-
 			}
 		}
 		response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));

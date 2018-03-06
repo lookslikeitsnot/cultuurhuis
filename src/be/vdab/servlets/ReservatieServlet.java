@@ -25,7 +25,6 @@ public class ReservatieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/reservatie.jsp";
 	private static final String REDIRECT_URL = "/mandje.htm";
-	private static final String REDIRECT_HOME_URL = "/index.htm";
 	private static final String MANDJE = "mandje";
 	private final transient VoorstellingenRepository voorstellingenRepository = new VoorstellingenRepository();
 
@@ -37,37 +36,30 @@ public class ReservatieServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getQueryString() != null) {
-			Map<String, String> fouten = new HashMap<>();
-			String voorstellingidStr = request.getParameter("id");
-			if (!StringUtils.isLong(voorstellingidStr)) {
-				fouten.put("voorstelling", "Voorstelling niet gevonden");
-			} else {
-				long voorstellingId = Long.parseLong(voorstellingidStr);
-				Optional<Voorstelling> voorstelling = voorstellingenRepository.findById(voorstellingId);
-				if (voorstelling.isPresent()) {
-					request.setAttribute("voorstelling", voorstelling.get());
-					HttpSession session = request.getSession(false);
-					if (session != null) {
-						Mandje mandje = (Mandje) session.getAttribute(MANDJE);
-						if (mandje != null) {
-							if (mandje.containsVoorstelling(voorstellingId)) {
-								request.setAttribute("alinmandje", mandje.get(voorstellingId));
-							}
+		Map<String, String> fouten = new HashMap<>();
+		String voorstellingidStr = request.getParameter("id");
+		if (!StringUtils.isLong(voorstellingidStr)) {
+			fouten.put("voorstelling", "Voorstelling niet gevonden");
+		} else {
+			long voorstellingId = Long.parseLong(voorstellingidStr);
+			Optional<Voorstelling> voorstelling = voorstellingenRepository.findById(voorstellingId);
+			if (voorstelling.isPresent()) {
+				request.setAttribute("voorstelling", voorstelling.get());
+				HttpSession session = request.getSession(false);
+				if (session != null) {
+					Mandje mandje = (Mandje) session.getAttribute(MANDJE);
+					if (mandje != null) {
+						if (mandje.containsVoorstelling(voorstellingId)) {
+							request.setAttribute("alinmandje", mandje.getAantalPlaatsen(voorstellingId));
 						}
 					}
-				} else {
-					fouten.put("voorstelling", "Voorstelling niet gevonden");
 				}
+			} else {
+				fouten.put("voorstelling", "Voorstelling niet gevonden");
 			}
-			if (!fouten.isEmpty()) {
-				request.setAttribute("fouten", fouten);
-			}
-
-			request.getRequestDispatcher(VIEW).forward(request, response);
-		} else {
-			response.sendRedirect(request.getContextPath() + REDIRECT_HOME_URL);
 		}
+		request.setAttribute("fouten", fouten);
+		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 
 	@Override
@@ -83,12 +75,11 @@ public class ReservatieServlet extends HttpServlet {
 			int aantalPlaatsen = Integer.parseInt(aantalPlaatsenStr);
 			if (StringUtils.isLong(voorstellingIdStr)) {
 				long voorstellingId = Long.parseLong(voorstellingIdStr);
-				Optional<Voorstelling> voorstelling = voorstellingenRepository.findById(voorstellingId);
-				if (voorstelling.isPresent()) {
-					int vrijePlaatsen = voorstelling.get().getVrijePlaatsen();
+				Optional<Voorstelling> optionalVoorstelling = voorstellingenRepository.findById(voorstellingId);
+				if (optionalVoorstelling.isPresent()) {
+					int vrijePlaatsen = optionalVoorstelling.get().getVrijePlaatsen();
 					if (vrijePlaatsen >= aantalPlaatsen && aantalPlaatsen > 0) {
 						HttpSession session = request.getSession();
-
 						Mandje mandje = (Mandje) session.getAttribute(MANDJE);
 						if (mandje == null) {
 							mandje = new Mandje();
@@ -108,13 +99,11 @@ public class ReservatieServlet extends HttpServlet {
 			}
 
 		}
-		if(!fouten.isEmpty()) {
+		if (!fouten.isEmpty()) {
 			request.setAttribute("fouten", fouten);
 			request.getRequestDispatcher(VIEW).forward(request, response);
 		}
-		
 
-		
 	}
 
 }

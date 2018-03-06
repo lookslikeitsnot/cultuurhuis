@@ -55,7 +55,7 @@ public class Mandje {
 		return mandje.stream().anyMatch(reservatie -> reservatie.getVoorstellingsid()==voorstellingId);
 	}
 	
-	public int get(long voorstellingId) {
+	public int getAantalPlaatsen(long voorstellingId) {
 		return mandje.stream()
 				.filter(reservatie -> reservatie.getVoorstellingsid()==voorstellingId)
 				.findAny()

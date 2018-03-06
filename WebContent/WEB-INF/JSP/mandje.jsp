@@ -8,19 +8,16 @@
 <vdab:head title='Mandje' />
 </head>
 <body>
-	<vdab:header title='mandje' />
+	<vdab:header title='mandje' imgtitle='mandje'/>
 	<c:if test="${empty voorstellingenEnPlaatsen}">
 		<h2>Mandje is leeg</h2>
-		<c:if test="${not empty fouten}">${fouten.mandje}</c:if>
-		
+		${fouten.mandje}
 	</c:if>
 	<a href="<c:url value='/'/>">Voorstellingen</a>
-
 	<c:if test="${not empty voorstellingenEnPlaatsen}">
 		<a href="<c:url value='/bevestig.htm'/>">Bevestiging reservatie</a>
 		<form method="post">
 			<table>
-
 				<tr>
 					<th>Datum</th>
 					<th>Titel</th>
@@ -38,8 +35,8 @@
 						<td><c:out value="${fmtDate}" /></td>
 						<td>${voorstelling.key.titel}</td>
 						<td>${voorstelling.key.uitvoerders}</td>
-						<td>
-						<fmt:formatNumber value='${voorstelling.key.prijs}' type="currency" currencyCode="EUR"/></td>
+						<td><fmt:formatNumber value='${voorstelling.key.prijs}'
+								type="currency" currencyCode="EUR" /></td>
 						<td>${voorstelling.value}</td>
 						<td><input type="checkbox" name="voorstellingIds"
 							value="${voorstelling.key.id}"></td>
@@ -47,7 +44,11 @@
 				</c:forEach>
 			</table>
 		</form>
-		<p>Te betalen: <fmt:formatNumber value='${mandjeWaarde}' type="currency" currencyCode="EUR"/></p>
+		<p>
+			Te betalen:
+			<fmt:formatNumber value='${mandjeWaarde}' type="currency"
+				currencyCode="EUR" />
+		</p>
 	</c:if>
 </body>
 </html>

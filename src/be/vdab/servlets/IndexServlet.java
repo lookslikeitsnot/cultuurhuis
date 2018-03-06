@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -20,52 +21,49 @@ import be.vdab.repositories.GenresRepository;
 import be.vdab.repositories.VoorstellingenRepository;
 import be.vdab.utils.StringUtils;
 
-
-
 @WebServlet("/index.htm")
-public class IndexServlet extends HttpServlet{
+public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/index.jsp";
-	private final transient GenresRepository genresRepository = 
-			new GenresRepository();
-	private final transient VoorstellingenRepository voorstellingenRepository = 
-			new VoorstellingenRepository();
-	
+	private final transient GenresRepository genresRepository = new GenresRepository();
+	private final transient VoorstellingenRepository voorstellingenRepository = new VoorstellingenRepository();
+
 	@Resource(name = AbstractRepository.JNDI_NAME)
 	void setDataSource(DataSource dataSource) {
 		genresRepository.setDataSource(dataSource);
 		voorstellingenRepository.setDataSource(dataSource);
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<Genre> genres = genresRepository.findAll();
 		request.setAttribute("genres", genres);
 		Map<String, String> fouten = new HashMap<>();
-		
-		if(request.getQueryString() != null) {
-			
+
+		if (request.getQueryString() != null) {
 			String genreid = request.getParameter("genreid");
-			if(!StringUtils.isInt(genreid)) {
-				fouten.put("genreid", "Genre niet gevonden");
+			if (!StringUtils.isInt(genreid)) {
+				fouten.put("genre", "Genre niet geldig");
 			} else {
-				request.setAttribute("genre", genresRepository.findById(Integer.parseInt(genreid)).get());
-				List<Voorstelling> voorstellingen = 
-						voorstellingenRepository.findByGenre(Integer.parseInt(genreid));
-				if(voorstellingen.isEmpty()) {
-					fouten.put("voorstellingen", "Geen voorstellingen gevonden");
+				Optional<Genre> optioneleGenre =  genresRepository.findById(Integer.parseInt(genreid));
+				if(optioneleGenre.isPresent()) {
+					request.setAttribute("genre", optioneleGenre.get());
+					List<Voorstelling> voorstellingen = voorstellingenRepository.findByGenre(Integer.parseInt(genreid));
+					if (voorstellingen.isEmpty()) {
+						fouten.put("voorstellingen", "Geen voorstellingen gevonden");
+					} else {
+						request.setAttribute("voorstellingen", voorstellingen);
+					}
 				} else {
-					request.setAttribute("voorstellingen", voorstellingen);
+					fouten.put("genre", "Genre niet gevonden");
 				}
-				
 			}
 		}
-		if(!fouten.isEmpty()) {
+		
+		if (!fouten.isEmpty()) {
 			request.setAttribute("fouten", fouten);
 		}
-		
 		request.getRequestDispatcher(VIEW).forward(request, response);
-	
 	}
 }

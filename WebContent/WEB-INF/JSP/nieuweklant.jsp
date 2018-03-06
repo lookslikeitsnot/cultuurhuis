@@ -8,7 +8,7 @@
 <vdab:head title='Nieuwe Klant' />
 </head>
 <body>
-	<vdab:header title='nieuwe klant' />
+	<vdab:header title='nieuwe klant' imgtitle='nieuwe'/>
 	<a href="<c:url value='/'/>">Voorstellingen</a>
 	<a href="<c:url value='/mandje.htm'/>">Reservatiemandje</a>
 	<a href="<c:url value='/bevestig.htm'/>">Bevestiging reservatie</a>
@@ -29,15 +29,15 @@
 		<label for="paswoord">Paswoord</label><br> <input type="password"
 			name="paswoord" id="paswoord" required><br> <label
 			for="paswoordHerhaald">Herhaal paswoord</label><br> <input
-			type="password" name="paswoordHerhaald" id="paswoordHerhaald" required><br>
-		<input type="submit" value="OK">
+			type="password" name="paswoordHerhaald" id="paswoordHerhaald"
+			required><br> <input type="submit" value="OK">
 	</form>
 	<c:if test='${not empty fouten}'>
-	<ul>
-	<c:forEach items='${fouten}' var='fout'>
-	<li>${fout.key} ${fout.value}</li>
-	</c:forEach>
-	</ul>
+		<ul>
+			<c:forEach items='${fouten}' var='fout'>
+				<li>${fout.key}${fout.value}</li>
+			</c:forEach>
+		</ul>
 	</c:if>
-	</body>
+</body>
 </html>

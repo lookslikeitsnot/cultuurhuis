@@ -8,9 +8,9 @@
 <vdab:head title='Reservatie' />
 </head>
 <body>
-	<vdab:header title='reserveren'/>
-	<c:url value='/index.htm' var='homeURL' />
-	<a href="${homeURL}">Voorstellingen</a>
+	<vdab:header title='reserveren' imgtitle='reserveren'/>
+	${fouten.voorstelling}
+	<a href="<c:url value='/'/>">Voorstellingen</a>
 	<c:if test="${not empty voorstelling}">
 		<dl>
 			<dt>Voorstelling:</dt>

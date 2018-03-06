@@ -8,7 +8,7 @@
 <vdab:head title='Cultuurhuis' />
 </head>
 <body>
-	<vdab:header title='voorstellingen' />
+	<vdab:header title='voorstellingen' imgtitle='voorstellingen'/>
 	<c:if test="${not empty sessionScope.mandje}">
 		<a href="<c:url value='/mandje.htm'/>">Reservatiemandje</a>
 		<a href="<c:url value='/bevestig.htm'/>">Bevestiging reservatie</a>
@@ -57,8 +57,6 @@
 			</c:forEach>
 		</table>
 	</c:if>
-	<c:if test="${not empty fouten}">
-	</c:if>
-
+	<c:if test="${not empty fouten.genre}"><h2>${fouten.genre}</h2></c:if>
 </body>
 </html>

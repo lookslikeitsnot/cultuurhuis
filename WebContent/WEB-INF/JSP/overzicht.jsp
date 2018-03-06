@@ -8,7 +8,7 @@
 <vdab:head title='Overzicht' />
 </head>
 <body>
-	<vdab:header title='overzicht' />
+	<vdab:header title='overzicht' imgtitle='overzicht'/>
 	<a href="<c:url value='/index.htm'/>">Voorstellingen</a>
 	<c:if test='${not empty gelukt}'>
 		<h2>Gelukte reserveringen</h2>

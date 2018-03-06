@@ -8,11 +8,10 @@
 <vdab:head title='Bevestiging reservaties' />
 </head>
 <body>
-	<vdab:header title='bevestiging' />
+	<vdab:header title='bevestiging' imgtitle='bevestiging'/>
 	<c:if test="${not empty sessionScope.mandje}">
 		<a href="<c:url value='/'/>">Voorstellingen</a>
 		<a href="<c:url value='/mandje.htm'/>">Reservatiemandje</a>
-
 	</c:if>
 	<h2>Stap 1:wie ben je ?</h2>
 	<form method="post">
@@ -25,12 +24,8 @@
 	<form action="/cultuurHuis/nieuweklant.htm">
 		<input type="submit" value="Ik ben nieuw" id="nieuwKnop">
 	</form>
-	<c:if test="${not empty klant}">
 	${klant}
-	</c:if>
-	<c:if test="${not empty fouten}">
 	${fouten.bevestig}
-	</c:if>
 	<h2>Stap 2:Bevestigen</h2>
 	<form method="post" action="/cultuurHuis/overzicht.htm">
 		<input type="submit" value="Bevestigen" name="bevestigen"

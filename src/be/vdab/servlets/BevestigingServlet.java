@@ -18,23 +18,22 @@ import be.vdab.entities.Klant;
 import be.vdab.repositories.KlantenRepository;
 
 @WebServlet("/bevestig.htm")
-public class BevestigingServlet extends HttpServlet{
+public class BevestigingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/bevestiging.jsp";
-	private final transient KlantenRepository klantenRepository = 
-			new KlantenRepository();
-	
+	private final transient KlantenRepository klantenRepository = new KlantenRepository();
+
 	@Resource(name = KlantenRepository.JNDI_NAME)
 	void setDataSource(DataSource dataSource) {
 		klantenRepository.setDataSource(dataSource);
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -42,20 +41,20 @@ public class BevestigingServlet extends HttpServlet{
 		String paswoord = request.getParameter("paswoord");
 		HttpSession session = request.getSession(false);
 		Map<String, String> fouten = new LinkedHashMap<>();
-		if(session != null) {
-			Optional<Klant> optionalKlant = klantenRepository.getKlantByGebruikersnaamEnPaswoord(gebruikersnaam, paswoord);
-			if(optionalKlant.isPresent()) {
+		if (session != null) {
+			Optional<Klant> optionalKlant = klantenRepository.getKlantByGebruikersnaamEnPaswoord(gebruikersnaam,
+					paswoord);
+			if (optionalKlant.isPresent()) {
 				session.setAttribute("klant", optionalKlant.get());
 				response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
 			} else {
 				fouten.put("bevestig", "Verkeerde gebruikersnaam of paswoord.");
 				request.setAttribute("fouten", fouten);
 				request.getRequestDispatcher(VIEW).forward(request, response);
-				
 			}
 		} else {
 			request.getRequestDispatcher(VIEW).forward(request, response);
 		}
-		
+
 	}
 }

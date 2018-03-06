@@ -67,7 +67,7 @@ public class OverzichtServlet extends HttpServlet {
 					Optional<Voorstelling> voorstelling = voorstellingenRepository
 							.findById(reservatie.getVoorstellingsid());
 					if (voorstelling.isPresent()) {
-						if (reservatie.getPlaatsen() < voorstelling.get().getVrijePlaatsen()) {
+						if (reservatie.getPlaatsen() <= voorstelling.get().getVrijePlaatsen()) {
 							reservatie.setKlantid(klant.getId());
 							gelukt.put(voorstelling.get(), reservatie.getPlaatsen());
 							reservatiesRepository.insertReservatie(reservatie);

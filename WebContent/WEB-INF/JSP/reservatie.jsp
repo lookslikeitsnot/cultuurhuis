@@ -26,7 +26,7 @@
 				<c:out value="${fmtDate}" />
 			</dd>
 			<dt>Prijs:</dt>
-			<dd>&euro;${voorstelling.prijs}</dd>
+			<dd><fmt:formatNumber value='${voorstelling.prijs}' type="currency" currencyCode="EUR"/></dd>
 			<dt>Vrije plaatsen:</dt>
 			<dd>${voorstelling.vrijePlaatsen}</dd>
 			<dt>Plaatsen</dt>
@@ -35,7 +35,7 @@
 			<input name="id" type="hidden" value="${voorstelling.id}">
 			<input name="aantalplaatsen" value="${alinmandje}" 
 			type="number" min="1" max="${voorstelling.vrijePlaatsen}" 
-			autofocus required>
+			autofocus required>${fouten.aantalplaatsen}
 			<input type="submit" value="Reserveren">
 			</form>
 			</dd>

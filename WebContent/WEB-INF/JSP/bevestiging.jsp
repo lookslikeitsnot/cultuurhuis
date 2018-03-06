@@ -44,6 +44,8 @@
 		} else {
 			document.getElementById("zoekKnop").disabled = true;
 			document.getElementById("nieuwKnop").disabled = true;
+			document.getElementById("gebruikersnaam").disabled = true;
+			document.getElementById("paswoord").disabled = true;
 		}
 	</script>
 </body>

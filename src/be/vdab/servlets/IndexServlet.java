@@ -50,12 +50,12 @@ public class IndexServlet extends HttpServlet{
 			if(!StringUtils.isInt(genreid)) {
 				fouten.put("genreid", "Genre niet gevonden");
 			} else {
+				request.setAttribute("genre", genresRepository.findById(Integer.parseInt(genreid)).get());
 				List<Voorstelling> voorstellingen = 
 						voorstellingenRepository.findByGenre(Integer.parseInt(genreid));
 				if(voorstellingen.isEmpty()) {
 					fouten.put("voorstellingen", "Geen voorstellingen gevonden");
 				} else {
-					request.setAttribute("genre", genresRepository.findById(Integer.parseInt(genreid)).get());
 					request.setAttribute("voorstellingen", voorstellingen);
 				}
 				

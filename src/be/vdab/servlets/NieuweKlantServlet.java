@@ -108,7 +108,7 @@ public class NieuweKlantServlet extends HttpServlet {
 					,gebruikersnaam
 					,paswoord
 					);
-			klantenRepository.insertKlant(klant);
+			klantenRepository.nieuweKlant(klant);
 			optionalKlant = Optional.of(klant);
 					
 		} else {

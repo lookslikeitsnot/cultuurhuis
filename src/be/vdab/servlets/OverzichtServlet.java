@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 import be.vdab.entities.Klant;
 import be.vdab.entities.Voorstelling;
+import be.vdab.exceptions.RepositoryException;
 import be.vdab.repositories.AbstractRepository;
 import be.vdab.repositories.ReservatiesRepository;
 import be.vdab.repositories.VoorstellingenRepository;
@@ -39,7 +40,6 @@ public class OverzichtServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("is here");
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 
@@ -47,7 +47,7 @@ public class OverzichtServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		mandjeWegSchrijven(request);
-		if(request.getAttribute("gelukt") == null && request.getAttribute("mislukt") == null) {
+		if (request.getAttribute("gelukt") == null && request.getAttribute("mislukt") == null) {
 			response.sendRedirect(request.getContextPath());
 		} else {
 			request.getRequestDispatcher(VIEW).forward(request, response);
@@ -57,39 +57,31 @@ public class OverzichtServlet extends HttpServlet {
 	private void mandjeWegSchrijven(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Mandje mandje = (Mandje) session.getAttribute(MANDJE);
-		Map<String, String> fouten = new LinkedHashMap<>();
-		if (mandje != null && !mandje.isEmpty()) {
-			Klant klant = (Klant) session.getAttribute("klant");
-			if (klant != null) {
-				Map<Voorstelling, Integer> gelukt = new LinkedHashMap<>();
-				Map<Voorstelling, Integer> mislukt = new LinkedHashMap<>();
-				for (Reservatie reservatie : mandje.getMandje()) {
-					Optional<Voorstelling> voorstelling = voorstellingenRepository
+		Klant klant = (Klant) session.getAttribute("klant");
+		if (mandje != null && !mandje.isEmpty() && klant != null) {
+			Map<Voorstelling, Integer> gelukt = new LinkedHashMap<>();
+			Map<Voorstelling, Integer> mislukt = new LinkedHashMap<>();
+			for (Reservatie reservatie : mandje.getMandje()) {
+				if (reservatie != null) {
+					Optional<Voorstelling> optioneleVoorstelling = voorstellingenRepository
 							.findById(reservatie.getVoorstellingsid());
-					if (voorstelling.isPresent()) {
-						if (reservatie.getPlaatsen() <= voorstelling.get().getVrijePlaatsen()) {
+					if (optioneleVoorstelling.isPresent()) {
+						Voorstelling voorstelling = optioneleVoorstelling.get();
+						try {
 							reservatie.setKlantid(klant.getId());
-							gelukt.put(voorstelling.get(), reservatie.getPlaatsen());
-							reservatiesRepository.insertReservatie(reservatie);
+							reservatiesRepository.nieuweReservatie(reservatie);
+							voorstellingenRepository.vrijePlaatsenVerminderen(reservatie.getVoorstellingsid(),
+									reservatie.getPlaatsen());
+							gelukt.put(voorstelling, reservatie.getPlaatsen());
+						} catch (RepositoryException ex) {
+							mislukt.put(voorstelling, reservatie.getPlaatsen());
 						}
-						else {
-							mislukt.put(voorstelling.get(), reservatie.getPlaatsen());
-						}
-
-					} else {
-						fouten.put("voorstelling", "niet gevonden");
 					}
 				}
-				request.setAttribute("gelukt", gelukt);
-				request.setAttribute("mislukt", mislukt);
-				session.removeAttribute("mandje");
-			} else {
-				fouten.put("klant", "niet gevonden");
 			}
-
-		} else {
-			fouten.put("mandje", "niet gevonden");
+			request.setAttribute("gelukt", gelukt);
+			request.setAttribute("mislukt", mislukt);
+			session.removeAttribute("mandje");
 		}
 	}
-
 }

@@ -14,7 +14,7 @@ import be.vdab.exceptions.RepositoryException;
 public class VoorstellingenRepository extends AbstractRepository {
 	private static final String SELECT = "SELECT id, datum, titel, uitvoerders, genreid, prijs, vrijeplaatsen "
 			+ "FROM voorstellingen ";
-	private static final String SELECT_BY_GENRE = SELECT + "WHERE genreid = ? AND datum >= CURDATE()";
+	private static final String SELECT_BY_GENRE = SELECT + "WHERE genreid = ? AND datum >= CURDATE() ORDER BY datum";
 	private static final String SELECT_BY_ID = SELECT + "WHERE id = ? ";
 	private static final String SELECT_PLAATSEN = "SELECT plaatsen FROM voorstellingen ";
 	private static final String UPDATE_PLAATSEN = "UPDATE voorstellingen SET vrijeplaatsen=vrijeplaatsen-? WHERE id=? ";
@@ -88,9 +88,11 @@ public class VoorstellingenRepository extends AbstractRepository {
 				PreparedStatement statement = connection.prepareStatement(UPDATE_PLAATSEN)) {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			connection.setAutoCommit(false);
-			statement.setLong(1, id);
-			statement.setInt(2, aantalPlaatsen);
+			statement.setInt(1, aantalPlaatsen);
+			statement.setLong(2, id);
+
 			statement.executeUpdate();
+			connection.commit();
 		} catch (SQLException ex) {
 			throw new RepositoryException(ex);
 		}

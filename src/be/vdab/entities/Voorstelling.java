@@ -11,7 +11,7 @@ public class Voorstelling {
 	private long genreId;
 	private BigDecimal prijs;
 	private int vrijePlaatsen;
-//	private int gereserveerdePlaatsen;
+	
 	public Voorstelling(long id, String titel, String uitvoerders, LocalDateTime datum, long genreId, BigDecimal prijs,
 			int vrijePlaatsen) {
 		this.id = id;
@@ -70,11 +70,9 @@ public class Voorstelling {
 		int result = 1;
 		result = prime * result + ((datum == null) ? 0 : datum.hashCode());
 		result = prime * result + (int) (genreId ^ (genreId >>> 32));
-		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((prijs == null) ? 0 : prijs.hashCode());
 		result = prime * result + ((titel == null) ? 0 : titel.hashCode());
 		result = prime * result + ((uitvoerders == null) ? 0 : uitvoerders.hashCode());
-		result = prime * result + vrijePlaatsen;
 		return result;
 	}
 	@Override
@@ -93,8 +91,6 @@ public class Voorstelling {
 			return false;
 		if (genreId != other.genreId)
 			return false;
-		if (id != other.id)
-			return false;
 		if (prijs == null) {
 			if (other.prijs != null)
 				return false;
@@ -110,15 +106,6 @@ public class Voorstelling {
 				return false;
 		} else if (!uitvoerders.equals(other.uitvoerders))
 			return false;
-		if (vrijePlaatsen != other.vrijePlaatsen)
-			return false;
 		return true;
 	}
-//	public int getGereserveerdePlaatsen() {
-//		return gereserveerdePlaatsen;
-//	}
-//	public void setGereserveerdePlaatsen(int gereserveerdePlaatsen) {
-//		this.gereserveerdePlaatsen = gereserveerdePlaatsen;
-//	}
-//	
 }

@@ -61,7 +61,7 @@ public class KlantenRepository extends AbstractRepository {
 		
 	}
 	
-	public void insertKlant(Klant klant) {
+	public void nieuweKlant(Klant klant) {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement(INSERT_KLANT)) {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);

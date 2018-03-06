@@ -29,7 +29,7 @@
 					<td><c:out value="${fmtDate}" /></td>
 					<td>${voorstelling.key.titel}</td>
 					<td>${voorstelling.key.uitvoerders}</td>
-					<td>&euro;${voorstelling.key.prijs}</td>
+					<td><fmt:formatNumber value='${voorstelling.key.prijs}' type="currency" currencyCode="EUR"/></td>
 					<td>${voorstelling.value}</td>
 				</tr>
 			</c:forEach>
@@ -55,7 +55,7 @@
 					<td><c:out value="${fmtDate}" /></td>
 					<td>${voorstelling.key.titel}</td>
 					<td>${voorstelling.key.uitvoerders}</td>
-					<td>&euro;${voorstelling.key.prijs}</td>
+					<td><fmt:formatNumber value='${voorstelling.key.prijs}' type="currency" currencyCode="EUR"/></td>
 					<td>${voorstelling.value}</td>
 					<td>${voorstelling.key.vrijePlaatsen}</td>
 				</tr>

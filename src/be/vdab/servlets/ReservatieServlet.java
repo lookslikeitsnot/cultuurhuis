@@ -108,11 +108,12 @@ public class ReservatieServlet extends HttpServlet {
 			}
 
 		}
-//		if (!fouten.isEmpty()) {
-//			response.sendRedirect(response.encodeRedirectURL(request.getRequestURI()));
-//		} else {
+		if(!fouten.isEmpty()) {
 			request.setAttribute("fouten", fouten);
-//		}
+			request.getRequestDispatcher(VIEW).forward(request, response);
+		}
+		
+
 		
 	}
 

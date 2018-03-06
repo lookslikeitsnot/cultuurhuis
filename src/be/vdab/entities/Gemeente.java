@@ -3,10 +3,12 @@ package be.vdab.entities;
 public class Gemeente {
 	private String naam;
 	private String postcode;
+	
 	public Gemeente(String naam, String postcode) {
 		this.naam = naam;
 		this.postcode = postcode;
 	}
+	
 	public String getNaam() {
 		return naam;
 	}

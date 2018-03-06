@@ -38,7 +38,8 @@
 						<td><c:out value="${fmtDate}" /></td>
 						<td>${voorstelling.key.titel}</td>
 						<td>${voorstelling.key.uitvoerders}</td>
-						<td>&euro;${voorstelling.key.prijs}</td>
+						<td>
+						<fmt:formatNumber value='${voorstelling.key.prijs}' type="currency" currencyCode="EUR"/></td>
 						<td>${voorstelling.value}</td>
 						<td><input type="checkbox" name="voorstellingIds"
 							value="${voorstelling.key.id}"></td>
@@ -46,7 +47,7 @@
 				</c:forEach>
 			</table>
 		</form>
-		<p>Te betalen: &euro;${mandjeWaarde}</p>
+		<p>Te betalen: <fmt:formatNumber value='${mandjeWaarde}' type="currency" currencyCode="EUR"/></p>
 	</c:if>
 </body>
 </html>

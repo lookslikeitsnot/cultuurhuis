@@ -68,15 +68,14 @@ public class ReservatieServlet extends HttpServlet {
 		Map<String, String> fouten = new HashMap<>();
 		String aantalPlaatsenStr = request.getParameter("aantalplaatsen");
 		String voorstellingIdStr = request.getParameter("id");
-
-		if (!StringUtils.isInt(aantalPlaatsenStr)) {
-			fouten.put("aantalplaatsen", "Moet een geheel getal zijn");
-		} else {
-			int aantalPlaatsen = Integer.parseInt(aantalPlaatsenStr);
-			if (StringUtils.isLong(voorstellingIdStr)) {
-				long voorstellingId = Long.parseLong(voorstellingIdStr);
-				Optional<Voorstelling> optionalVoorstelling = voorstellingenRepository.findById(voorstellingId);
-				if (optionalVoorstelling.isPresent()) {
+		if (StringUtils.isLong(voorstellingIdStr)) {
+			long voorstellingId = Long.parseLong(voorstellingIdStr);
+			Optional<Voorstelling> optionalVoorstelling = voorstellingenRepository.findById(voorstellingId);
+			if (optionalVoorstelling.isPresent()) {
+				if (!StringUtils.isInt(aantalPlaatsenStr)) {
+					fouten.put("aantalplaatsen", "Moet een geheel getal zijn");
+				} else {
+					int aantalPlaatsen = Integer.parseInt(aantalPlaatsenStr);
 					int vrijePlaatsen = optionalVoorstelling.get().getVrijePlaatsen();
 					if (vrijePlaatsen >= aantalPlaatsen && aantalPlaatsen > 0) {
 						HttpSession session = request.getSession();
@@ -90,18 +89,17 @@ public class ReservatieServlet extends HttpServlet {
 					} else {
 						fouten.put("aantalplaatsen", "Moet tussen 1 en " + vrijePlaatsen);
 					}
-				} else {
-					fouten.put("id", "Ongeldig");
 				}
-
 			} else {
 				fouten.put("id", "Ongeldig");
 			}
 
+		} else {
+			fouten.put("id", "Ongeldig");
 		}
-		if (!fouten.isEmpty()) {
-			request.setAttribute("fouten", fouten);
-			request.getRequestDispatcher(VIEW).forward(request, response);
+		if (!fouten.isEmpty()){
+			request.getSession().setAttribute("fouten", fouten);
+			response.sendRedirect(response.encodeRedirectURL(request.getRequestURI() + "?" + request.getQueryString()));
 		}
 
 	}

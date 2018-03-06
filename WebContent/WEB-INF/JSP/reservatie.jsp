@@ -35,7 +35,7 @@
 			<input name="id" type="hidden" value="${voorstelling.id}">
 			<input name="aantalplaatsen" value="${alinmandje}" 
 			type="number" min="1" max="${voorstelling.vrijePlaatsen}" 
-			autofocus required>${fouten.aantalplaatsen}
+			autofocus required><c:out value="${sessionScope.fouten.aantalplaatsen}"/>
 			<input type="submit" value="Reserveren">
 			</form>
 			</dd>
